@@ -9,16 +9,6 @@ from .threads import get_or_create_thread
 
 
 async def handle_message(msg: discord.Message, bot: Bot, config: GPTConfig):
-    # Check that the first thing is that it mentions the bot
-    assert bot.user
-    if not msg.content.startswith(f"<@{bot.user.id}>"):
-        return
-    # Don't respond to bots
-    if msg.author.bot:
-        return
-    # Should be in a public channel
-    if type(msg.channel) not in [discord.Thread, discord.TextChannel]:
-        return
     thread = await get_or_create_thread(str(msg.channel.id), config)
     client = config["client"]
     assistant_id = config["assistant_id"]
@@ -38,7 +28,6 @@ async def handle_message(msg: discord.Message, bot: Bot, config: GPTConfig):
 <END OF REFERENCED MESSAGE>
 }}>
 """
-
     try:
         await client.beta.threads.messages.create(
             thread_id=thread.id, role="user", content=content
@@ -47,7 +36,6 @@ async def handle_message(msg: discord.Message, bot: Bot, config: GPTConfig):
             thread_id=thread.id,
             assistant_id=assistant_id,
         )
-
         async with msg.channel.typing():
             while run.status == "in_progress" or run.status == "queued":
                 await asyncio.sleep(1)
