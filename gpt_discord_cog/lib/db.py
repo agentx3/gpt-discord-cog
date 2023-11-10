@@ -13,7 +13,7 @@ def create_sqlite_db(file: os.PathLike):
     conn = sqlite3.connect(file)
     c = conn.cursor()
     c.execute(
-        """CREATE TABLE threads (
+        """CREATE TABLE IF NOT EXISTS threads (
         id TEXT,
         channel_id TEXT,
         created_at INTEGER,
@@ -72,7 +72,7 @@ async def get_or_create_thread_from_sqlite(config: GPTConfig, channel_id: str):
             """
             INSERT INTO threads (id, channel_id, created_at)
             VALUES (?, ?, ?)
-            ON CONFLICT (id) DO UPDATE SET
+            ON CONFLICT (channel_id) DO UPDATE SET
             id = excluded.id,
             created_at = excluded.created_at
             ;
