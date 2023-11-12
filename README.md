@@ -1,6 +1,6 @@
 # GPT Discord Cog
 
-This is a simple library meant for use with with [py-cord](https://github.com/Pycord-Development/pycord). It should also be compatible with [discord.py](https://github.com/Rapptz/discord.py).
+This is a simple library meant for use with with [py-cord](https://github.com/Pycord-Development/pycord). It iscurrently incompatible with [discord.py](https://github.com/Rapptz/discord.py).
 
 This was made to facilitate an easy-to-implement module to add AI to your discord bot. Here are some of the details of the implementation:
 
@@ -18,14 +18,14 @@ Since I don't have this on pypi yet, you can put this in your requirements.txt
 
 or if you're using poetry put this in your dependencies:
 
-`gpt_discord_cog = { git = "https://github.com/agentx3/gpt-discord-cog.git"} ` 
+`gpt_discord_cog = { git = "https://github.com/agentx3/gpt-discord-cog.git"}`
 
 ## Usage:
 
-You will first need to create an Assistant and get its ID via OpenAIs API. See their [documentation](https://platform.openai.com/docs/api-reference/assistants). 
+You will first need to create an Assistant and get its ID via OpenAIs API. See their [documentation](https://platform.openai.com/docs/api-reference/assistants).
 
 ```python
-from gpt_discord_cog import LiveGPTConversation, initialize_sqlite_db
+from gpt_discord_cog import create_cog, initialize_sqlite_db
 from openai import AsyncOpenAI
 
 
@@ -39,7 +39,7 @@ db_name = "gpt-conversations.db" # The sqlite file name
 conn = initialize_sqlite_db(Path(os.getcwd()) / "gpt-conversations" / db_name)
 
 bot.add_cog(
-    LiveGPTConversation(
+    create_cog(
         bot,
         {
             "client": client,
@@ -47,6 +47,7 @@ bot.add_cog(
             "database_name": db_name,
             "database_connection": conn,
             "conversation_lifetime": 60 * 60 * 24, # Number in seconds for a thread to live once created
+            "commands": {...}
         },
     )
 )
@@ -55,5 +56,22 @@ bot.add_cog(
 
 bot.run("YourBotToken")
 
+```
+
+The `commands` key supports some additional configuration for some commands. Currently, it supports a modify command that allows you to modify the instructional prompt of the Assistant. Here is an example of the dictionary for commands.
+```python
+{
+    # This key identifies the command for configuration
+    "modify":{
+        # This is the actual name of the command as used in the discord client
+        "name": "Foo", 
+        # Description of command
+        "description": "Bar",
+        # This takes in a Callable[[ ApplicationContext ], bool]
+        # It should return true if the user has valid permissions to use the command
+        # By default it checks no permissions (everyone can use it)
+        "check": lambda foo: foo == "bar"
+    }
+}
 ```
 
