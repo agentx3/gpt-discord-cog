@@ -11,7 +11,7 @@ if __name__ == "__main__":
         author_email="thepuzzlegang.agent@gmail.com",
         # Needed to actually package something
         packages=find_packages(),
-        version="1.2",
+        version="1.3",
         description="A cog for py-cord that easily attaches an OpenAI assisatnt to a bot",
         long_description=long_description,
         long_description_content_type="text/markdown",

@@ -36,11 +36,9 @@ class ModifyAssistantModal(discord.ui.Modal):
                 instructions=instructions,
                 description=description,
             )
-            await interaction.response.send_message(
-                content="Updated assistant instructions"
-            )
+            await interaction.followup.send(content="Updated assistant instructions")
         except Exception as e:
-            await interaction.response.send_message(f"Error: {e}")
+            await interaction.followup.send(f"Error: {e}")
 
 
 async def modify_assistant(ctx: discord.ApplicationContext, config: GPTConfig):

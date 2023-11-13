@@ -31,6 +31,10 @@ class CommandConfig(TypedDict):
     modify: CommandOptions
 
 
+class ImageConfig(TypedDict):
+    enable: bool
+
+
 class UserGPTConfig(TypedDict):
     """The only purpose for this is to make some of the keys optional"""
 
@@ -39,6 +43,7 @@ class UserGPTConfig(TypedDict):
     database_connection: sqlite3.Connection  # TODO: Add a handler for redis
     database_name: str
     conversation_lifetime: int
+    image: Optional[ImageConfig]
     commands: Optional[UserCommandConfig]
 
 
