@@ -1,6 +1,6 @@
 # GPT Discord Cog
 
-This is a simple library meant for use with with [py-cord](https://github.com/Pycord-Development/pycord). It iscurrently incompatible with [discord.py](https://github.com/Rapptz/discord.py).
+This is a simple library meant for use with with [py-cord](https://github.com/Pycord-Development/pycord). It is currently incompatible with [discord.py](https://github.com/Rapptz/discord.py).
 
 This was made to facilitate an easy-to-implement module to add AI to your discord bot. Here are some of the details of the implementation:
 
@@ -47,7 +47,20 @@ bot.add_cog(
             "database_name": db_name,
             "database_connection": conn,
             "conversation_lifetime": 60 * 60 * 24, # Number in seconds for a thread to live once created
-            "commands": {...}
+            "commands": {
+                # Command to modify the instructional prompt
+                "modify":{
+                    # This is the actual name of the command as used in the discord client
+                    "name": "Foo", 
+                    # Description of command
+                    "description": "Bar",
+                    # This takes in a Callable[[ ApplicationContext ], bool]
+                    # It should return true if the user has valid permissions to use the command
+                    # By default it checks no permissions (everyone can use it)
+                    "check": lambda ctx: ctx.interaction.user.id == 1
+                }
+            },
+            "image": {"enable": False } # Whether or not it'll try to detect if you wanat an image and create one
         },
     )
 )
@@ -58,20 +71,4 @@ bot.run("YourBotToken")
 
 ```
 
-The `commands` key supports some additional configuration for some commands. Currently, it supports a modify command that allows you to modify the instructional prompt of the Assistant. Here is an example of the dictionary for commands.
-```python
-{
-    # This key identifies the command for configuration
-    "modify":{
-        # This is the actual name of the command as used in the discord client
-        "name": "Foo", 
-        # Description of command
-        "description": "Bar",
-        # This takes in a Callable[[ ApplicationContext ], bool]
-        # It should return true if the user has valid permissions to use the command
-        # By default it checks no permissions (everyone can use it)
-        "check": lambda foo: foo == "bar"
-    }
-}
-```
 
