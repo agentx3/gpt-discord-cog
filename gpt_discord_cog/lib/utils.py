@@ -20,7 +20,6 @@ def deep_merge(defaults: T, new: Mapping) -> T:
         if isinstance(value, dict):
             deep_merge(value, new[key])
         elif key in new:
-            print("overrriding", key)
             defaults[key] = new[key]
     return defaults
 
