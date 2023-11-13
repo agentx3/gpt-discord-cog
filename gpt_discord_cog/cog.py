@@ -5,7 +5,8 @@ import discord
 from discord.ext import commands
 from .conversation import handle_message
 from .lib.types import GPTConfig, UserGPTConfig
-from .lib.defaults import merge_with_default_commands
+from .lib.defaults import get_default_config
+from .lib.utils import merge_configs
 from .assistants import modify_assistant
 from functools import wraps
 
@@ -43,7 +44,7 @@ def create_cog(
     """
 
     # Merge the default commands with the user's commands
-    config = merge_with_default_commands(user_config)
+    config = merge_configs(get_default_config(), user_config)
 
     # Defining a class inside a function is a bit icky, but we're doing this
     # to directly pass kwargs to the metaclass constructor, a necessity given that

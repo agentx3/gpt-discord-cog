@@ -11,11 +11,11 @@ if __name__ == "__main__":
         author_email="thepuzzlegang.agent@gmail.com",
         # Needed to actually package something
         packages=find_packages(),
-        version="1.3",
+        version="1.31",
         description="A cog for py-cord that easily attaches an OpenAI assisatnt to a bot",
         long_description=long_description,
         long_description_content_type="text/markdown",
-        install_requires=["openai"],
+        install_requires=["openai", "py-cord"],
         python_requires=">=3.10",
         classifiers=[
             "Programming Language :: Python :: 3.10",
